@@ -1,0 +1,29 @@
+version: '3'
+services:
+  
+  # Backend service
+  backend:
+    build:
+      context: ./Application-Code/backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3500:3500"  # Expose backend service on port 3500
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./Application-Code/frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"  # Expose frontend service on port 3000
+    depends_on:
+      - backend  # Make sure frontend waits for backend to be up
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
